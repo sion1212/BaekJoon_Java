@@ -1,11 +1,9 @@
-import B2412.Java02;
-
-import java.util.*;
+import B2412.*;
 
 public class Main {
 
     public static void main(String[] args){
-        Java02 java02 = new Java02();
-        java02.solution();
+        Java04 java04 = new Java04();
+        java04.solution();
     }
 }
