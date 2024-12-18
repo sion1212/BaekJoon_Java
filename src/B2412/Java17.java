@@ -119,9 +119,9 @@ public class Java17 {
 
     public int[] lengths(Coordinate c1, Coordinate c2, Coordinate c3){
         int[] l = new int[3];
-        l[0] = (int) Math.pow(c1.getX()-c2.getX(),2);
-        l[1] = (int) Math.pow(c2.getX()-c3.getX(),2);
-        l[2] = (int) Math.pow(c1.getY()-c3.getY(),2);
+        l[0] = (int) (Math.pow(c1.getX()-c2.getX(),2) + Math.pow(c1.getY()-c2.getY(),2));
+        l[1] = (int) (Math.pow(c2.getX()-c3.getX(),2) + Math.pow(c2.getY()-c3.getY(),2));
+        l[2] = (int) (Math.pow(c1.getX()-c3.getX(),2) + Math.pow(c1.getY()-c3.getY(),2));
         return l;
     }
 
@@ -132,8 +132,16 @@ public class Java17 {
                 clockwise = false;
             }
         }
-        else{
+        else if(c2.getX() < c1.getX()){
             if(c2.getY() > c3.getY()){ //반시계방향
+                clockwise = false;
+            }
+        }
+        else{
+            if(c2.getY() < c1.getY() && c2.getX() < c3.getX()){
+                clockwise = false;
+            }
+            else if(c2.getY() > c1.getY() && c2.getX() > c3.getX()){
                 clockwise = false;
             }
         }
