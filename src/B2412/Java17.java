@@ -61,17 +61,19 @@ public class Java17 {
                         energy += totalEnergy(c1[i], c2[j], c3[l]);
                     }
                     else if(c1[i].getX() == c2[j].getX() || c1[i].getY() == c2[j].getY()){// ㅡ or |
-                        clockwise = isClockwise(c1[i], c2[j], c3[l]);
+                        clockwise = isClockwise(c1[i], c2[j], c3[l], 0);
                         if(clockwise){ // 시계방향인 경우
-                            energy += (int) (totalEnergy(c1[i], c2[j], c3[l]) - 2*area(c1[i], c2[j], c3[l]));
+                            double result = Math.round(totalEnergy(c1[i], c2[j], c3[l]) - 2*area(c1[i], c2[j], c3[l]));
+                            energy += (int) result;
                         }
                         else{ // 반시계방향인 경우
-                            energy += (int) (totalEnergy(c1[i], c2[j], c3[l]) + 2*area(c1[i], c2[j], c3[l]));
+                            double result = Math.round(totalEnergy(c1[i], c2[j], c3[l]) + 2*area(c1[i], c2[j], c3[l]));
+                            energy += (int) result;
                         }
                     }
                     else{
                         sl = slope(c1[i], c2[j]);
-                        in = intersect(sl, c3[l]);
+                        in = intersect(sl, c1[i]);
                         if(sameLinear(sl, in, c3[l])){ //직선에 모든 점이 존재하는 경우
                             energy += totalEnergy(c1[i], c2[j], c3[l]);
                         }
@@ -83,12 +85,14 @@ public class Java17 {
                          */
                         else{//삼각형인 경우
                             //시계방향인지 확인
-                            clockwise = isClockwise(c1[i], c2[j], c3[l]);
+                            clockwise = isClockwise(c1[i], c2[j], c3[l], 1);
                             if(clockwise){ // 시계방향인 경우
-                                energy += (int) (totalEnergy(c1[i], c2[j], c3[l]) - 2*area(c1[i], c2[j], c3[l]));
+                                double result = Math.round(totalEnergy(c1[i], c2[j], c3[l]) - 2*area(c1[i], c2[j], c3[l]));
+                                energy += (int) result;
                             }
                             else{ // 반시계방향인 경우
-                                energy += (int) (totalEnergy(c1[i], c2[j], c3[l]) + 2*area(c1[i], c2[j], c3[l]));
+                                double result = Math.round(totalEnergy(c1[i], c2[j], c3[l]) + 2*area(c1[i], c2[j], c3[l]));
+                                energy += (int) result;
                             }
                         }
                     }
@@ -125,24 +129,40 @@ public class Java17 {
         return l;
     }
 
-    public boolean isClockwise(Coordinate c1, Coordinate c2, Coordinate c3) {
+    public boolean isClockwise(Coordinate c1, Coordinate c2, Coordinate c3, int option) {
         boolean clockwise = true;
-        if(c2.getX() > c1.getX()){
-            if(c2.getY() < c3.getY()){//반시계방향
-                clockwise = false;
+        if (option == 0){
+            if(c2.getX() > c1.getX()){
+                if(c2.getY() < c3.getY()){//반시계방향
+                    clockwise = false;
+                }
+            }
+            else if(c2.getX() < c1.getX()){
+                if(c2.getY() > c3.getY()){ //반시계방향
+                    clockwise = false;
+                }
+            }
+            else{ //c1, c2의 x축이 동일한 경우
+                if(c2.getY() < c1.getY() && c2.getX() < c3.getX()){
+                    clockwise = false;
+                }
+                else if(c2.getY() > c1.getY() && c2.getX() > c3.getX()){
+                    clockwise = false;
+                }
             }
         }
-        else if(c2.getX() < c1.getX()){
-            if(c2.getY() > c3.getY()){ //반시계방향
-                clockwise = false;
+        else{ // c1과 c2가 기울기가 0<a<무한대 인 기울기를 가지는 경우
+            double slope = slope(c1, c2);
+            double intersect = intersect(slope, c1);
+            if(c2.getX() > c1.getX()){
+                if(slope*c3.getX()+intersect < c3.getY()){
+                    clockwise = false;
+                }
             }
-        }
-        else{
-            if(c2.getY() < c1.getY() && c2.getX() < c3.getX()){
-                clockwise = false;
-            }
-            else if(c2.getY() > c1.getY() && c2.getX() > c3.getX()){
-                clockwise = false;
+            else if(c2.getX() < c1.getX()){
+                if(slope*c3.getX()+intersect > c3.getY()){
+                    clockwise = false;
+                }
             }
         }
         return clockwise;
@@ -154,7 +174,8 @@ public class Java17 {
         double b = Math.sqrt(len[1]);
         double c = Math.sqrt(len[2]);
         double s = (a+b+c)/2;
-        return Math.sqrt(s*(s-a)*(s-b)*(s-c));
+        double result = Math.sqrt(s*(s-a)*(s-b)*(s-c));
+        return result;
     }
 
 }
