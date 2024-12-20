@@ -11,8 +11,6 @@ public class Java17 {
         }
         public int getX() {return x;}
         public int getY() {return y;}
-        public void setX(int x) {this.x = x;}
-        public void setY(int y) {this.y = y;}
     }
 
     public void solution(){
@@ -29,13 +27,6 @@ public class Java17 {
         Coordinate[] c1 = new Coordinate[n];
         Coordinate[] c2 = new Coordinate[m];
         Coordinate[] c3 = new Coordinate[k];
-
-//        Coordinate c4 = new Coordinate(0,0);
-//        Coordinate c5 = new Coordinate(1,1);
-//        double s = slope(c4, c5);
-//        double inter = intersect(s,c4);
-//        System.out.println("slope >> "+ s);
-//        System.out.println("intersect >> "+inter);
 
         for (int i=0 ; i<n ; i++) { c1[i] = new Coordinate(sc.nextInt(), sc.nextInt()); }
         for (int i=0 ; i<m ; i++) { c2[i] = new Coordinate(sc.nextInt(), sc.nextInt()); }
